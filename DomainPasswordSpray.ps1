@@ -241,13 +241,19 @@ function Invoke-DomainPasswordSpray{
     }
     else
     {
+        $j = 0
         for($i = 0; $i -lt $Passwords.count; $i++)
         {
             Invoke-SpraySinglePassword -Domain $CurrentDomain -UserListArray $UserListArray -Password $Passwords[$i] -OutFile $OutFile -Delay $Delay -Jitter $Jitter
             if (($i+1) -lt $Passwords.count)
             {
-                Countdown-Timer -Seconds (60*$observation_window)
-            }
+                $j++
+                if ($j = ($lockout_threshold - 1))
+                {
+                    $j = 0
+                    Countdown-Timer -Seconds (60*$observation_window)
+                }
+            {
         }
     }
 
