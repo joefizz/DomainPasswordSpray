@@ -267,10 +267,10 @@ function Invoke-DomainPasswordSpray{
             if ($j -ge ($lockout_threshold - 1))
             {
                 $j = 0
-                Countdown-Timer -Seconds (20*$observation_window)
+                Countdown-Timer -Seconds (60*$observation_window)
             }
             else{
-                Countdown-Timer -Seconds (60)
+                Countdown-Timer -Seconds (20)
             }
         }
     }
