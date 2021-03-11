@@ -111,6 +111,10 @@ function Invoke-DomainPasswordSpray{
      [Parameter(Position = 9, Mandatory = $false)]
      $Jitter=0
 
+     [Parameter(Position = 10, Mandatory = $false)]
+     [int]
+     $Window
+
     )
 
     if ($Password)
@@ -181,7 +185,13 @@ function Invoke-DomainPasswordSpray{
         Write-Host -ForegroundColor Yellow "[*] WARNING - Be very careful not to lock out accounts with the password list option!"
     }
 
-    $observation_window = Get-ObservationWindow $CurrentDomain
+    if ($Window)
+    {
+        $observation_window = $Window
+    }
+    else{
+        $observation_window = Get-ObservationWindow $CurrentDomain
+    }
 
     Write-Host -ForegroundColor Yellow "[*] The domain password policy observation window is set to $observation_window minutes."
     Write-Host "[*] Setting a $observation_window minute wait in between sprays."
@@ -237,7 +247,7 @@ function Invoke-DomainPasswordSpray{
 function Countdown-Timer
 {
     param(
-        $Seconds = 1800,
+        $Seconds = 5,
         $Message = "[*] Pausing to avoid account lockout."
     )
     foreach ($Count in (1..$Seconds))
