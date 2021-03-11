@@ -240,7 +240,8 @@ function Invoke-DomainPasswordSpray{
             break
         }
     }
-    Write-Host -ForegroundColor Yellow "[*] Password spraying has begun with " $Passwords.count " passwords"
+    $password_count = $Passwords.count
+    Write-Host -ForegroundColor Yellow "[*] Password spraying has begun with " $password_count " passwords"
     Write-Host "[*] This might take a while depending on the total number of users"
 
     if($UsernameAsPassword)
@@ -254,6 +255,8 @@ function Invoke-DomainPasswordSpray{
         {
             Invoke-SpraySinglePassword -Domain $CurrentDomain -UserListArray $UserListArray -Password $Passwords[$i] -OutFile $OutFile -Delay $Delay -Jitter $Jitter
             $j++
+            Write-Host -ForegroundColor Yellow "[*] Completed $j of $password_count passwords from list "
+            Countdown-Timer -Seconds (60)
             if ($j -ge ($lockout_threshold - 1))
             {
                 $j = 0
