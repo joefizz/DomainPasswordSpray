@@ -109,7 +109,7 @@ function Invoke-DomainPasswordSpray{
      $Delay=0,
 
      [Parameter(Position = 9, Mandatory = $false)]
-     $Jitter=0
+     $Jitter=0,
 
      [Parameter(Position = 10, Mandatory = $false)]
      [int]
