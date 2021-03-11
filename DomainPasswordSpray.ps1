@@ -129,6 +129,7 @@ function Invoke-DomainPasswordSpray{
 
     )
 
+    Write-Host -ForegroundColor Green "DomainPasswordSpray"
     if ($Password)
     {
         $Passwords = @($Password)
