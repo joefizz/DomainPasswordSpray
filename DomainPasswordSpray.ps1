@@ -250,6 +250,7 @@ function Invoke-DomainPasswordSpray{
     $password_count = $Passwords.count
     Write-Host -ForegroundColor Yellow "[*] Password spraying has begun with " $password_count " passwords"
     Write-Host "[*] This might take a while depending on the total number of users"
+    Write-Host "[*] threshold currently in use is $lockout_threshold, we will attempt 1 less tries than this"
 
     if($UsernameAsPassword)
     {
