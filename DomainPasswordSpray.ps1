@@ -253,7 +253,7 @@ function Invoke-DomainPasswordSpray{
                     $j = 0
                     Countdown-Timer -Seconds (60*$observation_window)
                 }
-            {
+            }
         }
     }
 
