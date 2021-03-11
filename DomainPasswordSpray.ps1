@@ -140,7 +140,13 @@ function Invoke-DomainPasswordSpray{
     }
     elseif($PasswordList)
     {
-        $Passwords = Get-Content $PasswordList
+        try{
+            $Passwords = Get-Content $PasswordList
+        }
+        catch{
+            Write-Host -ForegroundColor Red "[*] File $PasswordList does not exist or cannot be opened"
+            break
+        }
     }
     else
     {
