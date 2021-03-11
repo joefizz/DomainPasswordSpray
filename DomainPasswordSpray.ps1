@@ -115,7 +115,7 @@ function Invoke-DomainPasswordSpray{
      [int]
      $Window,
 
-     [Parameter(Position = 11. Mandatory = $false)]
+     [Parameter(Position = 11, Mandatory = $false)]
      [int]
      $Threshold
 
