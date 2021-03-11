@@ -46,6 +46,14 @@ function Invoke-DomainPasswordSpray{
 
     For each user, will try that user's name as their password
 
+    .PARAMETER Window
+
+    Specify observation window in minutes. If excluded will attempt to extract from domain
+
+    .PARAMETER Threshold
+    
+    Specify lockout threshold (number of failed attempts before accounts lockout). n-1 attempts will be made per observation window. If excluded will attempt to extract from domain
+
     .EXAMPLE
 
     C:\PS> Invoke-DomainPasswordSpray -Password Winter2016
