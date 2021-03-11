@@ -113,7 +113,7 @@ function Invoke-DomainPasswordSpray{
 
      [Parameter(Position = 10, Mandatory = $false)]
      [int]
-     $Window
+     $Window,
 
      [Parameter(Position = 11. Mandatory = $false)]
      [int]
@@ -206,7 +206,7 @@ function Invoke-DomainPasswordSpray{
     {   
         $lockout_threshold = Get-LockoutThreshold $CurrentDomain
     }
-    
+
     Write-Host -ForegroundColor Yellow "[*] The domain password policy observation window is set to $observation_window minutes."
     Write-Host "[*] Setting a $observation_window minute wait in between sprays."
 
