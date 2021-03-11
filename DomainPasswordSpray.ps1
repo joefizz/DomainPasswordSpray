@@ -253,14 +253,11 @@ function Invoke-DomainPasswordSpray{
         for($i = 0; $i -lt $Passwords.count; $i++)
         {
             Invoke-SpraySinglePassword -Domain $CurrentDomain -UserListArray $UserListArray -Password $Passwords[$i] -OutFile $OutFile -Delay $Delay -Jitter $Jitter
-            if (($i+1) -lt $Passwords.count)
+            $j++
+            if ($j = ($lockout_threshold - 1))
             {
-                $j++
-                if ($j = ($lockout_threshold - 1))
-                {
-                    $j = 0
-                    Countdown-Timer -Seconds (60*$observation_window)
-                }
+                $j = 0
+                Countdown-Timer -Seconds (60*$observation_window)
             }
         }
     }
