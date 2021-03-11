@@ -590,6 +590,33 @@ function Get-ObservationWindow($DomainEntry)
 
 function Get-LockoutThreshold($DomainEntry)
 {
+     try
+    {
+        if ($Domain -ne "")
+        {
+            # Using domain specified with -Domain option
+            $DomainContext = New-Object System.DirectoryServices.ActiveDirectory.DirectoryContext("domain",$Domain)
+            $DomainObject =[System.DirectoryServices.ActiveDirectory.Domain]::GetDomain($DomainContext)
+            $CurrentDomain = "LDAP://" + ([ADSI]"LDAP://$Domain").distinguishedName
+        }
+        else
+        {
+            # Trying to use the current user's domain
+            $DomainObject =[System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain()
+            $CurrentDomain = "LDAP://" + ([ADSI]"").distinguishedName
+        }
+    }
+    catch
+    {
+        Write-Host -ForegroundColor "red" "[*] Could connect to the domain. Try specifying the domain name with the -Domain option."
+        break
+    }
+
+    # Setting the current domain's account lockout threshold
+    $objDeDomain = [ADSI] "LDAP://$($DomainObject.PDCRoleOwner)"
+    $AccountLockoutThresholds = @()
+    $AccountLockoutThresholds += $objDeDomain.Properties.lockoutthreshold
+    
     [int]$SmallestLockoutThreshold = $AccountLockoutThresholds | sort | Select -First 1
 
     if ($SmallestLockoutThreshold -eq "0")
