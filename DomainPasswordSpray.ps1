@@ -263,7 +263,7 @@ function Invoke-DomainPasswordSpray{
         {
             Invoke-SpraySinglePassword -Domain $CurrentDomain -UserListArray $UserListArray -Password $Passwords[$i] -OutFile $OutFile -Delay $Delay -Jitter $Jitter
             $j++
-            Write-Host -ForegroundColor Yellow "[*] Completed $j of $lockout_threshold attempts for this window "
+            Write-Host -ForegroundColor Yellow "[*] Completed $j of $lockout_threshold-1 attempts for this window "
             if ($j -ge ($lockout_threshold - 1))
             {
                 $j = 0
